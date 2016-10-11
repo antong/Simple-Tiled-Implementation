@@ -54,11 +54,14 @@ return {
 			table.insert(collision, obj)
 		end
 
-		local function getPolygonVertices(object)
+		local function getPolygonVertices(object, ref)
 			local vertices = {}
+			local x0 = ref and ref.x or 0
+			local y0 = ref and ref.y or 0
+
 			for _, vertex in ipairs(object.polygon) do
-				table.insert(vertices, vertex.x)
-				table.insert(vertices, vertex.y)
+				table.insert(vertices, x0 + object.x + vertex.x)
+				table.insert(vertices, y0 + object.y + vertex.y)
 			end
 
 			return vertices
@@ -67,8 +70,8 @@ return {
 		local function calculateObjectPosition(object, tile)
 			local o = {
 				shape   = object.shape,
-				x       = object.dx or object.x,
-				y       = object.dy or object.y,
+				x       = object.x,
+				y       = object.y,
 				w       = object.width,
 				h       = object.height,
 				polygon = object.polygon or object.polyline or object.ellipse or object.rectangle
@@ -83,7 +86,6 @@ return {
 				o.r       = object.rotation or 0
 				local cos = math.cos(math.rad(o.r))
 				local sin = math.sin(math.rad(o.r))
-				local oy  = 0
 
 				if object.gid then
 					local tileset = map.tilesets[map.tiles[object.gid].tileset]
@@ -92,7 +94,6 @@ return {
 
 					-- This fixes a height issue
 					 o.y = o.y + map.tiles[object.gid].offset.y
-					 oy  = tileset.tileheight
 
 					for _, t in ipairs(tileset.tiles) do
 						if t.id == lid then
@@ -115,37 +116,37 @@ return {
 				end
 
 				o.polygon = {
-					{ x=o.x+0,   y=o.y+0   },
-					{ x=o.x+o.w, y=o.y+0   },
-					{ x=o.x+o.w, y=o.y+o.h },
-					{ x=o.x+0,   y=o.y+o.h }
+					{ x=0,   y=0   },
+					{ x=o.w, y=0   },
+					{ x=o.w, y=o.h },
+					{ x=0,   y=o.h }
 				}
 
 				for _, vertex in ipairs(o.polygon) do
-					vertex.x, vertex.y = utils.rotate_vertex(map, vertex, o.x, o.y, cos, sin, oy)
+					vertex.x, vertex.y = utils.rotate_vertex(map, vertex, 0, 0, cos, sin)
 				end
 
-				local vertices = getPolygonVertices(o)
+				local vertices = getPolygonVertices(o, tile)
 				addObjectToWorld(o.shape, vertices, userdata, tile or object)
 			elseif o.shape == "ellipse" then
 				if not o.polygon then
-					o.polygon = utils.convert_ellipse_to_polygon(o.x, o.y, o.w, o.h)
+					o.polygon = utils.convert_ellipse_to_polygon(0, 0, o.w, o.h)
 				end
-				local vertices  = getPolygonVertices(o)
+				local vertices  = getPolygonVertices(o, tile)
 				local triangles = love.math.triangulate(vertices)
 
 				for _, triangle in ipairs(triangles) do
 					addObjectToWorld(o.shape, triangle, userdata, tile or object)
 				end
 			elseif o.shape == "polygon" then
-				local vertices  = getPolygonVertices(o)
+				local vertices  = getPolygonVertices(o, tile)
 				local triangles = love.math.triangulate(vertices)
 
 				for _, triangle in ipairs(triangles) do
 					addObjectToWorld(o.shape, triangle, userdata, tile or object)
 				end
 			elseif o.shape == "polyline" then
-				local vertices = getPolygonVertices(o)
+				local vertices = getPolygonVertices(o, tile)
 				addObjectToWorld(o.shape, vertices, userdata, tile or object)
 			end
 		end
@@ -158,20 +159,18 @@ return {
 				if map.tileInstances[tile.gid] then
 					for _, instance in ipairs(map.tileInstances[tile.gid]) do
 						for _, object in ipairs(tile.objectGroup.objects) do
-							object.dx = object.x + instance.x
-							object.dy = object.y + instance.y
 							calculateObjectPosition(object, instance)
 						end
 					end
 				end
 
 			-- Every instance of a tile
-			elseif tile.properties and tile.properties.collidable == true and map.tileInstances[tile.gid] then
+			elseif tile.properties and tile.properties.collidable then
 				for _, instance in ipairs(map.tileInstances[tile.gid]) do
 					local object = {
 						shape      = "rectangle",
-						x          = instance.x,
-						y          = instance.y,
+						x          = 0,
+						y          = 0,
 						width      = tileset.tilewidth,
 						height     = tileset.tileheight,
 						properties = tile.properties

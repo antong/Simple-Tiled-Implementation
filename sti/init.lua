@@ -315,6 +315,7 @@ function Map:setObjectCoordinates(layer)
 			end
 		elseif object.shape == "ellipse" then
 			object.ellipse = {}
+			object.x, object.y = 0, 0
 			local vertices = utils.convert_ellipse_to_polygon(x, y, w, h)
 
 			for _, vertex in ipairs(vertices) do
@@ -322,12 +323,14 @@ function Map:setObjectCoordinates(layer)
 				table.insert(object.ellipse, { x = vertex.x, y = vertex.y })
 			end
 		elseif object.shape == "polygon" then
+			object.x, object.y = 0, 0
 			for _, vertex in ipairs(object.polygon) do
 				vertex.x           = vertex.x + x
 				vertex.y           = vertex.y + y
 				vertex.x, vertex.y = utils.rotate_vertex(self, vertex, x, y, cos, sin)
 			end
 		elseif object.shape == "polyline" then
+			object.x, object.y = 0, 0
 			for _, vertex in ipairs(object.polyline) do
 				vertex.x           = vertex.x + x
 				vertex.y           = vertex.y + y

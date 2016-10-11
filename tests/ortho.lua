@@ -1,7 +1,7 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "0.16.0",
+  tiledversion = "0.17.1163",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 32,
@@ -28,7 +28,165 @@ return {
       properties = {},
       terrains = {},
       tilecount = 1024,
-      tiles = {}
+      tiles = {
+        {
+          id = 66,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 6,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 4,
+                y = 6,
+                width = 24,
+                height = 22,
+                rotation = 0,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
+        },
+        {
+          id = 72,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 79,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 15,
+                y = 5,
+                width = 15,
+                height = 7,
+                rotation = 37,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
+        },
+        {
+          id = 85,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 0,
+                y = 32,
+                width = 13,
+                height = 12,
+                rotation = 10,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 31.25, y = 0 },
+                  { x = 31.25, y = -31.25 }
+                },
+                properties = {}
+              }
+            }
+          }
+        },
+        {
+          id = 170,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 0,
+                y = 9,
+                width = 0,
+                height = 0,
+                rotation = 0,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 0, y = 22.5 },
+                  { x = 19.25, y = 22.5 },
+                  { x = 17.75, y = 0.5 }
+                },
+                properties = {}
+              }
+            }
+          }
+        },
+        {
+          id = 256,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "ellipse",
+                x = 15,
+                y = 15,
+                width = 24,
+                height = 24,
+                rotation = 0,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   layers = {
@@ -87,6 +245,7 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
+      draworder = "topdown",
       properties = {
         ["collidable"] = true
       },
